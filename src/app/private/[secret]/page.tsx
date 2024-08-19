@@ -38,13 +38,13 @@ const Page: React.FC<PageProps> = async ({ params }) => {
           <Professional />
         </div>
 
-        <div className="mt-12">
+        {/* <div className="mt-12">
           <Achievements />
         </div>
 
         <div className="mt-12">
           <AdditionalInfo />
-        </div>
+        </div> */}
       </div>
 
       <Footer />

@@ -5,7 +5,7 @@ import { fullName } from 'src/helpers/utils';
 
 const theme = resumeConfig.imageTheme;
 
-export const alt = 'Professional Résumé';
+export const alt = 'Professional Resume';
 export const contentType = 'image/png';
 export const runtime = 'edge';
 export const size = {
@@ -45,7 +45,7 @@ export default async function og() {
             }}
             tw="text-6xl"
           >
-            Professional Résumé
+            Professional Resume
           </div>
           <div
             style={{ color: getAccentColor(12, theme) }}

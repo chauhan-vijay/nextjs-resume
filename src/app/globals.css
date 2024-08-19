@@ -10,9 +10,29 @@
     @apply rounded-md bg-neutral-1 px-2 font-mono font-medium;
   }
   .prose ul {
-    @apply mt-4 list-disc pl-4 marker:text-neutral-9;
+    @apply ml-4 mt-2 list-disc pl-4 marker:text-neutral-9;
   }
   .prose li {
-    @apply my-2 pl-2;
+    @apply my-1 pl-2;
+  }
+  .prose hr {
+    @apply border-t-2 border-neutral-6 pb-2;
+  }
+
+  .prose p {
+    @apply mb-0 !important;
+  }
+
+  .project ul {
+    @apply ml-4 mt-2 list-disc pl-4 marker:text-neutral-9;
+  }
+  .project li {
+    @apply my-1 pl-2;
+  }
+  .project hr {
+    @apply border-t-2 border-neutral-6 pb-2;
+  }
+  .project p {
+    @apply mb-0 !important;
   }
 }

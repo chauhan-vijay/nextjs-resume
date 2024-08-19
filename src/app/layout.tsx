@@ -12,6 +12,7 @@ import { fullName } from 'src/helpers/utils';
 import { twMerge } from 'tailwind-merge';
 import { ThemeSetting } from '../../edit-me/types/Config';
 import './globals.css';
+import { GoogleTagManager } from '@next/third-parties/google';
 
 const accentColor = resumeConfig.accentColor;
 
@@ -30,9 +31,9 @@ const jetBrainsMono = JetBrains_Mono({
 export const generateMetadata = async (): Promise<Metadata> => {
   const host = headers().get('host');
   const baseURL = `${protocol}://${host || vercelURL}`;
-  const siteName = `${fullName} Professional Résumé`;
-  const title = `Résumé | ${fullName} | Somewhere`;
-  const description = `Professional résumé for ${fullName}.`;
+  const siteName = `${fullName} Professional Resume`;
+  const title = `Resume | ${fullName}`;
+  const description = `Professional resume for ${fullName}.`;
 
   return {
     metadataBase: new URL(baseURL),
@@ -81,6 +82,7 @@ const RootLayout: React.FC<PropsWithChildren> = async ({ children }) => {
       <body className="bg-neutral-1 text-neutral-12 selection:bg-accent-11 selection:text-neutral-1">
         {children}
       </body>
+      <GoogleTagManager gtmId="GTM-THSQBH4" />
     </html>
   );
 };

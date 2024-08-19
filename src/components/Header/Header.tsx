@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ secret }) => {
               {personal.title}
             </Heading>
           </div>
-          <PDFDownloadButton secret={secret} />
+          {/* <PDFDownloadButton secret={secret} /> */}
         </div>
       </div>
     </div>

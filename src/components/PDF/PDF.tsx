@@ -2,6 +2,7 @@
 import {
   PrivateField,
   ProfessionalExperience,
+  Project,
   additionalInfo,
   allSkills,
   personal,
@@ -46,22 +47,20 @@ Font.register({
   fonts: [
     {
       fontStyle: 'normal',
-      fontWeight: 400,
+      fontWeight: 'normal',
       src: `${albertSrc}/i7dZIFdwYjGaAMFtZd_QA3xXSKZqhr-TenSHq5P_rI32TxAj1g.ttf`,
     },
     {
       fontStyle: 'italic',
-      fontWeight: 400,
       src: `${albertSrc}/i7dfIFdwYjGaAMFtZd_QA1Zeelmy79QJ1HOSY9AX74fybRUz1r5t.ttf`,
     },
     {
-      fontStyle: 'normal',
-      fontWeight: 700,
+      fontWeight: 'bold',
       src: `${albertSrc}/i7dZIFdwYjGaAMFtZd_QA3xXSKZqhr-TenSHTJT_rI32TxAj1g.ttf`,
     },
     {
       fontStyle: 'italic',
-      fontWeight: 700,
+      fontWeight: 'bold',
       src: `${albertSrc}/i7dfIFdwYjGaAMFtZd_QA1Zeelmy79QJ1HOSY9Dw6IfybRUz1r5t.ttf`,
     },
   ],
@@ -233,7 +232,8 @@ const styles = StyleSheet.create({
     textDecoration: 'underline',
   },
   list: {
-    marginTop: spacers[2],
+    marginTop: 0.5,
+    paddingLeft: spacers[4],
   },
   code: {
     backgroundColor: getNeutralColor(4, theme),
@@ -242,6 +242,9 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     paddingHorizontal: spacers[2],
   },
+  paragraph: {},
+  projectBold: {},
+  projectSection: { marginBottom: spacers[2] },
 });
 
 const htmlProps: Omit<HtmlProps, 'children'> = {
@@ -249,7 +252,8 @@ const htmlProps: Omit<HtmlProps, 'children'> = {
   style: { fontSize: fontSizes.xxs },
   stylesheet: {
     a: styles.a,
-    p: styles.sectionParagraph,
+    strong: styles.bold,
+    p: styles.paragraph,
     ul: styles.list,
     ol: styles.list,
     code: styles.code,
@@ -259,6 +263,41 @@ const htmlProps: Omit<HtmlProps, 'children'> = {
 interface PDFProps {
   privateInformation?: PrivateField[];
 }
+
+interface ProjectProps {
+  project: Project;
+}
+
+const ProjectDetail: React.FC<ProjectProps> = ({ project }) => {
+  return (
+    <>
+      <Text>
+        <Text style={styles.projectBold}>Project Name:</Text>
+        <Text> {project.title}</Text>
+      </Text>
+      <Text>
+        <Text style={styles.projectBold}>Description:</Text>
+        <Text> {project.description}</Text>
+      </Text>
+      <Text>
+        <Text style={styles.projectBold}>Tools &amp; Technologies:</Text>
+        <Text> {project.toolsAndTechnologies}</Text>
+      </Text>
+      <View>
+        <Text style={styles.projectBold}>Roles &amp; Responsibilities:</Text>
+        {project.rolesAndResponsibilities.map((value, index) => (
+          <Text key={index} style={styles.list}>
+            <Text>•</Text>
+            <Text>
+              {'  '}
+              {value}
+            </Text>
+          </Text>
+        ))}
+      </View>
+    </>
+  );
+};
 
 interface ProfessionExperienceProps {
   professionalExperience: ProfessionalExperience;
@@ -287,6 +326,21 @@ const ProfessionalExperienceDetails: React.FC<ProfessionExperienceProps> = ({
               </Text>
             ))}
         </View>
+        <View>
+          {professionalExperience.projects &&
+            professionalExperience.projects.length > 0 &&
+            professionalExperience.projects.map(
+              (project: Project, index: number) => (
+                <>
+                  <ProjectDetail key={index} project={project}></ProjectDetail>
+                  {professionalExperience.projects &&
+                    professionalExperience.projects.length !== index + 1 && (
+                      <View style={styles.projectSection}></View>
+                    )}
+                </>
+              ),
+            )}
+        </View>
       </View>
     </>
   );
@@ -297,7 +351,7 @@ const PDF: React.FC<PDFProps> = ({ privateInformation }) => {
 
   return (
     // @ts-ignore
-    <Document author={fullName} title={`Resumé for ${fullName}, ${year}`}>
+    <Document author={fullName} title={`Resume for ${fullName}, ${year}`}>
       {/* @ts-ignore */}
       <Page size="LETTER" style={styles.page}>
         <View style={styles.sidebar}>
@@ -319,7 +373,7 @@ const PDF: React.FC<PDFProps> = ({ privateInformation }) => {
                 <Text>Contact Information</Text>
               </View>
               <View style={styles.flexRow}>
-                <Text style={styles.bold}>Location:</Text>
+                <Text style={styles.bold}>Location: </Text>
                 <Text>&nbsp;{personal.location}</Text>
               </View>
               {privateInformation?.map((privateField) => (
@@ -364,7 +418,7 @@ const PDF: React.FC<PDFProps> = ({ privateInformation }) => {
                   <Text style={styles.professionalTitle}>
                     {professionalExperience.title}
                   </Text>
-                  <Text>&nbsp;at {professionalExperience.organization}</Text>
+                  <Text>at {professionalExperience.organization}</Text>
                 </View>
                 <ProfessionalExperienceDetails
                   professionalExperience={professionalExperience}
@@ -393,7 +447,7 @@ const PDF: React.FC<PDFProps> = ({ privateInformation }) => {
               </View>
             ))}
           </View>
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <View style={styles.sectionHeading}>
               <CirclePaintbrush size={fontSizes.m} />
               <Text>{additionalInfo.title}</Text>
@@ -407,7 +461,7 @@ const PDF: React.FC<PDFProps> = ({ privateInformation }) => {
             >
               {additionalInfo.body.html}
             </Html>
-          </View>
+          </View> */}
         </View>
       </Page>
     </Document>

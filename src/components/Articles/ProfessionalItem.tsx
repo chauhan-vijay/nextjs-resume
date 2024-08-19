@@ -1,8 +1,9 @@
-import { PreviousTitle, ProfessionalExperience } from '@content';
+import { PreviousTitle, ProfessionalExperience, Project } from '@content';
 import React from 'react';
 import { sortedPreviousTitles } from 'src/helpers/utils';
 import { Heading } from '../Heading/Heading';
 import Prose from '../Prose/Prose';
+import ProjectItem from './ProjectItem';
 
 const ProfessionalItem: React.FC<ProfessionalExperience> = ({
   body,
@@ -11,6 +12,7 @@ const ProfessionalItem: React.FC<ProfessionalExperience> = ({
   startDate,
   title,
   previousTitles,
+  projects,
 }) => {
   const previousTitlesSorted = previousTitles
     ? sortedPreviousTitles(previousTitles)
@@ -43,7 +45,11 @@ const ProfessionalItem: React.FC<ProfessionalExperience> = ({
           </>
         )}
       </div>
-
+      {projects &&
+        projects.length > 0 &&
+        projects.map((project: Project, index) => (
+          <ProjectItem key={index} {...project}></ProjectItem>
+        ))}
       <Prose html={body.html} />
     </article>
   );
