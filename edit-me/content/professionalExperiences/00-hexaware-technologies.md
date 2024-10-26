@@ -1,6 +1,6 @@
 ---
 title: Senior Software Engineer
-organization: Mobiquity (part of Hexaware)
+organization: Hexaware Technologies
 startDate: January 2022
 projects:
   - title: Facility Management Platform

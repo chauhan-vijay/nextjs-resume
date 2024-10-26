@@ -47,12 +47,6 @@ export default async function og() {
           >
             Professional Resume
           </div>
-          <div
-            style={{ color: getAccentColor(12, theme) }}
-            tw="mt-12 text-4xl rounded-lg"
-          >
-            Available online or as a PDF
-          </div>
         </div>
       </div>
     ),
