@@ -16,7 +16,7 @@ export default function NotFound(): ReactNode {
 
         <Button asChild color="neutral">
           <Link href="/">
-            <HomeIcon /> Visit public résumé
+            <HomeIcon /> Visit public resume
           </Link>
         </Button>
       </div>

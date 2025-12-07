@@ -21,7 +21,7 @@ export default function Error({ error }: { error: Error }): ReactNode {
 
         <Button asChild color="neutral">
           <Link href="/">
-            <HomeIcon /> Visit public résumé
+            <HomeIcon /> Visit public resume
           </Link>
         </Button>
       </div>

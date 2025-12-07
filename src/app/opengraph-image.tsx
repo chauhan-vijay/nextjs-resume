@@ -8,7 +8,7 @@ import { fullName } from 'src/helpers/utilities';
 
 const theme = resumeConfig.imageTheme;
 
-export const alt = 'Professional Résumé';
+export const alt = 'Professional Resume';
 export const contentType = 'image/png';
 export const runtime = 'nodejs';
 export const size = {
@@ -56,7 +56,7 @@ export default async function og(): Promise<ImageResponse> {
         style={{ color: getAccentColor(12, theme) }}
         tw="rounded-lg text-4xl"
       >
-        Professional résumé available online or as a PDF
+        Professional resume available online or as a PDF
       </div>
     </div>,
     {

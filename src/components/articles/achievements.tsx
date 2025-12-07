@@ -1,3 +1,4 @@
+import { Achievement } from '@content';
 import { AcademicCapIcon } from '@heroicons/react/24/solid';
 import { Fragment, ReactNode } from 'react';
 import AchievementItem from 'src/components/articles/achievement-item';
@@ -16,7 +17,7 @@ export default function Achievements(): ReactNode {
           text="Achievements"
         />
 
-        {sortedAchievements.map((achievement) => (
+        {sortedAchievements.map((achievement: Achievement) => (
           <Fragment key={achievement._id}>
             <AchievementItem key={achievement._id} {...achievement} />
             <Separator />

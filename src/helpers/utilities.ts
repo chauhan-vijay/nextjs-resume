@@ -12,20 +12,17 @@ export const fullName = `${personal.givenName} ${personal.familyName}`;
 
 export const initials = `${personal.givenName.slice(0, 1)}${personal.familyName.slice(0, 1)}`;
 
-export const sortedProfessionalExperiences =
-  allProfessionalExperiences.toSorted((a, b) => {
-    const earliestStartDateA = Math.min(
-      ...a.titles.map((title) => new Date(title.startDate).getTime()),
-    );
-    const earliestStartDateB = Math.min(
-      ...b.titles.map((title) => new Date(title.startDate).getTime()),
-    );
+export function sortedProfessionalExperiences(): typeof allProfessionalExperiences {
+  return allProfessionalExperiences.toSorted((a, b) => {
+    const startDateA = new Date(a.startDate).getTime();
+    const startDateB = new Date(b.startDate).getTime();
 
-    return earliestStartDateB - earliestStartDateA;
+    return startDateB - startDateA;
   });
+}
 
 export const sortedAchievements = allAchievements.toSorted((a, b) => {
-  return b.completionYear - a.completionYear;
+  return Number(b.completionYear) - Number(a.completionYear);
 });
 
 export function getFormattedDate(dateTimeString: IsoDateTimeString): string {

@@ -4,10 +4,11 @@ import Separator from 'src/components/articles/separator';
 import SectionHeading from 'src/components/section-heading/section-heading';
 import { sortedProfessionalExperiences } from 'src/helpers/utilities';
 import ProfessionalItem from './professional-item';
+import { ProfessionalExperience } from '@content';
 
 export default function Professional(): ReactNode {
   return (
-    <article className="border-neutral-6 bg-neutral-2 rounded-xl border py-12 shadow-md">
+    <article className="border-neutral-6 bg-neutral-2 rounded-xl border py-6 shadow-md">
       <div className="container space-y-8">
         <SectionHeading
           className="justify-center"
@@ -16,7 +17,7 @@ export default function Professional(): ReactNode {
           text="Professional Experience"
         />
 
-        {sortedProfessionalExperiences.map((professional) => (
+        {sortedProfessionalExperiences().map((professional: ProfessionalExperience) => (
           <Fragment key={professional._id}>
             <ProfessionalItem {...professional} />
             <Separator />

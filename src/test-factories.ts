@@ -3,7 +3,6 @@ import type {
   Personal,
   PrivateField,
   ProfessionalExperience,
-  ProfessionalTitle,
   Salary,
 } from '@content';
 
@@ -35,30 +34,6 @@ export function createMockAchievement(
 }
 
 /**
- * Factory function to create mock ProfessionalTitle objects for testing
- */
-export function createMockProfessionalTitle(
-  overrides: Partial<ProfessionalTitle> = {},
-): ProfessionalTitle {
-  return {
-    _id: 'title-1',
-    _raw: {
-      sourceFilePath: 'professional-experiences/company-a.md',
-      sourceFileName: 'company-a.md',
-      sourceFileDir: 'professional-experiences',
-      contentType: 'data',
-      flattenedPath: 'professional-experiences/company-a',
-    },
-    type: 'ProfessionalTitle',
-    title: 'Senior Software Engineer',
-    startDate: '2022-01-01T00:00:00.000Z',
-    endDate: undefined,
-    description: 'Leading the development of core features',
-    ...overrides,
-  };
-}
-
-/**
  * Factory function to create mock ProfessionalExperience objects for testing
  */
 export function createMockProfessionalExperience(
@@ -74,8 +49,10 @@ export function createMockProfessionalExperience(
       flattenedPath: 'professional-experiences/company-a',
     },
     type: 'ProfessionalExperience',
+    title: 'Software Engineer',
     organization: 'Tech Company A',
-    titles: [createMockProfessionalTitle()],
+    startDate: '2020-01-01',
+    endDate: undefined,
     body: {
       raw: 'Built scalable microservices using Node.js and TypeScript.',
       html: '<p>Built scalable microservices using Node.js and TypeScript.</p>',
@@ -192,36 +169,9 @@ export const mockData = {
         flattenedPath: 'professional-experiences/company-b',
       },
       organization: 'Tech Company B',
-      titles: [
-        createMockProfessionalTitle({
-          _id: 'title-2',
-          _raw: {
-            sourceFilePath: 'professional-experiences/company-b.md',
-            sourceFileName: 'company-b.md',
-            sourceFileDir: 'professional-experiences',
-            contentType: 'data',
-            flattenedPath: 'professional-experiences/company-b',
-          },
-          title: 'Senior Developer',
-          startDate: '2021-01-01T00:00:00.000Z',
-          endDate: undefined,
-          description: 'Promoted to senior position',
-        }),
-        createMockProfessionalTitle({
-          _id: 'title-3',
-          _raw: {
-            sourceFilePath: 'professional-experiences/company-b.md',
-            sourceFileName: 'company-b.md',
-            sourceFileDir: 'professional-experiences',
-            contentType: 'data',
-            flattenedPath: 'professional-experiences/company-b',
-          },
-          title: 'Junior Developer',
-          startDate: '2019-06-01T00:00:00.000Z',
-          endDate: '2020-12-31T00:00:00.000Z',
-          description: 'Started as a junior developer',
-        }),
-      ],
+      title: 'Senior Developer',
+      startDate: '2021-01-01',
+      endDate: undefined,
       body: {
         raw: 'Worked on various frontend projects.',
         html: '<p>Worked on various frontend projects.</p>',

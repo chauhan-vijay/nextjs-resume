@@ -1,48 +1,34 @@
-import { ProfessionalExperience } from '@content';
+import { ProfessionalExperience, Project } from '@content';
 import { ReactNode } from 'react';
 import { Heading } from 'src/components/heading/heading';
 import Prose from 'src/components/prose/prose';
-import { cn, getFormattedDate } from 'src/helpers/utilities';
+import ProjectItem from './project-item';
 
 export default function ProfessionalItem({
   body,
+  endDate,
   organization,
-  titles,
+  startDate,
+  title,
+  projects,
 }: ProfessionalExperience): ReactNode {
   return (
-    <article className="space-y-4">
+    <article className="border-neutral-6 py-6 m-0 first-of-type:border-none last-of-type:pb-0">
       <Heading className="text-balance" level={3}>
-        {organization}
+        <span className="rounded-md bg-neutral-12 px-2 text-neutral-1">
+          {title}
+        </span>
+        <span> at {organization}</span>
       </Heading>
 
-      <ul>
-        {titles.map((title) => (
-          <li className="group flex gap-6" key={title.title}>
-            <div
-              className={cn('flex flex-col items-center gap-[6px]', {
-                hidden: titles.length === 1,
-              })}
-            >
-              <span className="bg-accent-11 mt-[6px] block h-2 w-2 flex-none rounded-full" />
-              <div className="bg-accent-6 h-full w-[2px] rounded-full group-last:hidden" />
-            </div>
-
-            <div className="space-y-3 pb-4 group-last:pb-0">
-              <div className="text-lg leading-none font-bold">
-                {title.title}
-              </div>
-              <div className="text-neutral-11 text-sm leading-none tracking-wide">
-                {getFormattedDate(title.startDate)}–
-                {title.endDate ? getFormattedDate(title.endDate) : 'Current'}
-              </div>
-              {title.description && (
-                <p className="text-sm">{title.description}</p>
-              )}
-            </div>
-          </li>
+      <div className="mt-1 font-medium tracking-wide">
+        {startDate}-{endDate ?? 'Current'}
+      </div>
+      {projects &&
+        projects.length > 0 &&
+        projects.map((project: Project, index) => (
+          <ProjectItem key={index} {...project}></ProjectItem>
         ))}
-      </ul>
-
       <Prose html={body.html} />
     </article>
   );

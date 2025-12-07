@@ -1,8 +1,9 @@
 import { resumeConfig } from '@config/resume-config';
 import {
+  Achievement,
   PrivateField,
   ProfessionalExperience,
-  additionalInfo,
+  Project,
   allSkills,
   personal,
 } from '@content';
@@ -24,7 +25,6 @@ import CircleBriefcase from 'src/components/pdf/icons/circle-briefcase';
 import CircleCheck from 'src/components/pdf/icons/circle-check';
 import CircleGraduationCap from 'src/components/pdf/icons/circle-graduation-cap';
 import CircleIdCard from 'src/components/pdf/icons/circle-id-card';
-import CirclePaintbrush from 'src/components/pdf/icons/circle-paintbrush';
 import CircleUser from 'src/components/pdf/icons/circle-user';
 import GitHub from 'src/components/pdf/icons/github';
 import LinkedIn from 'src/components/pdf/icons/linkedin';
@@ -99,12 +99,20 @@ const fontSizes = {
 
 const spacers = {
   0: '4px',
+  0.25: '1.5px',
   1: '6px',
   2: '8px',
   3: '10px',
   4: '12px',
   5: '14px',
   6: '16px',
+  6.5: '18px',
+  7: '20px',
+  8: '24px',
+  9: '28px',
+  10: '32px',
+  11: '36px',
+  12: '40px',
 };
 
 const styles = StyleSheet.create({
@@ -134,14 +142,14 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: getAccentColor(6, theme),
     color: getNeutralColor(12, theme),
-    padding: `${spacers[6]} ${spacers[4]}`,
+    padding: `${spacers[12]} ${spacers[4]}`,
     textAlign: 'center',
     display: 'flex',
     flexDirection: 'column',
     gap: spacers[4],
   },
-  headerTitle: { fontSize: fontSizes.xl, fontWeight: 700 },
-  headerSubtitle: { fontSize: fontSizes.m, fontWeight: 700 },
+  headerTitle: { fontSize: fontSizes.l, fontWeight: 700 },
+  headerSubtitle: { fontSize: fontSizes.xs, fontWeight: 700 },
   main: {
     alignSelf: 'stretch',
     display: 'flex',
@@ -218,6 +226,7 @@ const styles = StyleSheet.create({
     color: getNeutralColor(1, theme),
     fontWeight: 700,
     paddingHorizontal: spacers[1],
+    paddingVertical: spacers[0.25],
   },
   bold: { fontWeight: 700 },
   flexColumn: { display: 'flex', flexDirection: 'column' },
@@ -232,7 +241,8 @@ const styles = StyleSheet.create({
     textDecoration: 'underline',
   },
   list: {
-    marginTop: spacers[2],
+    marginTop: 0.5,
+    paddingLeft: spacers[4],
   },
   code: {
     backgroundColor: getNeutralColor(4, theme),
@@ -255,13 +265,16 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     gap: spacers[1],
   },
+  paragraph: {},
+  projectSection: { marginBottom: spacers[6.5] },
 });
 
 const htmlProperties: Omit<HtmlProps, 'children'> = {
   style: { fontSize: fontSizes.xxs },
   stylesheet: {
     a: styles.a,
-    p: styles.sectionParagraph,
+    strong: styles.bold,
+    p: styles.paragraph,
     ul: styles.list,
     ol: styles.list,
     code: styles.code,
@@ -270,6 +283,41 @@ const htmlProperties: Omit<HtmlProps, 'children'> = {
 
 interface PDFProperties {
   privateInformation?: PrivateField[];
+}
+
+interface ProjectProperties {
+  project: Project;
+}
+
+function ProjectDetail({ project }: ProjectProperties): ReactNode {
+  return (
+    <>
+      <Text>
+        <Text style={styles.bold}>Project Name:</Text>
+        <Text> {project.title}</Text>
+      </Text>
+      <Text>
+        <Text style={styles.bold}>Description:</Text>
+        <Text> {project.description}</Text>
+      </Text>
+      <Text>
+        <Text style={styles.bold}>Tools &amp; Technologies:</Text>
+        <Text> {project.toolsAndTechnologies}</Text>
+      </Text>
+      <View>
+        <Text style={styles.bold}>Roles &amp; Responsibilities:</Text>
+        {project.rolesAndResponsibilities.map((value, index) => (
+          <Text key={index} style={styles.list}>
+            <Text>•</Text>
+            <Text>
+              {'  '}
+              {value}
+            </Text>
+          </Text>
+        ))}
+      </View>
+    </>
+  );
 }
 
 interface ProfessionExperienceProperties {
@@ -283,12 +331,25 @@ function ProfessionalExperienceDetails({
     <>
       <View style={styles.itemSubheadingRow}>
         <View style={styles.itemSubheadingSubRow}>
-          {professionalExperience.titles.map((title, index) => (
-            <Text key={index} style={styles.itemSubheadingItalic}>
-              {title.title}, {getFormattedDate(title.startDate)}—
-              {title.endDate ? getFormattedDate(title.endDate) : 'Current'}
-            </Text>
-          ))}
+          <Text style={styles.itemSubheadingItalic}>
+            {professionalExperience.startDate}—
+            {professionalExperience.endDate ?? 'Current'}
+          </Text>
+        </View>
+        <View>
+          {professionalExperience.projects &&
+            professionalExperience.projects.length > 0 &&
+            professionalExperience.projects.map(
+              (project: Project, index: number) => (
+                <>
+                  <ProjectDetail key={index} project={project}></ProjectDetail>
+                  {professionalExperience.projects &&
+                    professionalExperience.projects.length !== index + 1 && (
+                      <View style={styles.projectSection}></View>
+                    )}
+                </>
+              ),
+            )}
         </View>
       </View>
     </>
@@ -301,9 +362,9 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
   return (
     <Document
       author={fullName}
-      title={`Résumé for ${fullName}, ${year.toString()}`}
+      title={`Resume for ${fullName}, ${year.toString()}`}
     >
-      <Page size="LETTER" style={styles.page}>
+      <Page size="B4" style={styles.page}>
         <View style={styles.sidebar}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>{fullName}</Text>
@@ -323,7 +384,7 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
                 <Text>Contact Information</Text>
               </View>
               <View style={styles.flexRow}>
-                <Text style={styles.bold}>Location:</Text>
+                <Text style={styles.bold}>Location: </Text>
                 <Text>&nbsp;{personal.location}</Text>
               </View>
               {privateInformation?.map((privateField) => (
@@ -382,26 +443,31 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
               <CircleBriefcase size={fontSizes.m} />
               <Text>Professional Experience</Text>
             </View>
-            {sortedProfessionalExperiences.map((professionalExperience) => (
-              <View key={professionalExperience._id}>
-                <View style={styles.itemHeading}>
-                  <Text>{professionalExperience.organization}</Text>
+            {sortedProfessionalExperiences().map(
+              (professionalExperience: ProfessionalExperience) => (
+                <View key={professionalExperience._id}>
+                  <View style={styles.itemHeading}>
+                    <Text style={styles.professionalTitle}>
+                      {professionalExperience.title}
+                    </Text>
+                    <Text>at {professionalExperience.organization}</Text>
+                  </View>
+                  <ProfessionalExperienceDetails
+                    professionalExperience={professionalExperience}
+                  />
+                  <Html {...htmlProperties}>
+                    {professionalExperience.body.html}
+                  </Html>
                 </View>
-                <ProfessionalExperienceDetails
-                  professionalExperience={professionalExperience}
-                />
-                <Html {...htmlProperties}>
-                  {professionalExperience.body.html}
-                </Html>
-              </View>
-            ))}
+              ),
+            )}
           </View>
           <View style={styles.section}>
             <View style={styles.sectionHeading}>
               <CircleGraduationCap size={fontSizes.m} />
               <Text>Achievements</Text>
             </View>
-            {sortedAchievements.map((achievement) => (
+            {sortedAchievements.map((achievement: Achievement) => (
               <View key={achievement._id}>
                 <View style={styles.itemHeading}>
                   <Text style={styles.bold}>{achievement.achievement}</Text>
@@ -416,21 +482,7 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
               </View>
             ))}
           </View>
-          <View style={styles.section}>
-            <View style={styles.sectionHeading}>
-              <CirclePaintbrush size={fontSizes.m} />
-              <Text>{additionalInfo.title}</Text>
-            </View>
-            <Html
-              {...htmlProperties}
-              stylesheet={{
-                ...htmlProperties.stylesheet,
-                p: { marginBottom: spacers[1] },
-              }}
-            >
-              {additionalInfo.body.html}
-            </Html>
-          </View>
+          
         </View>
       </Page>
     </Document>

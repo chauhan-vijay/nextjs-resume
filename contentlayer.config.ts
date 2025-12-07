@@ -81,19 +81,62 @@ export const ProfessionalTitle = defineNestedType(() => ({
   },
 }));
 
+export const Project = defineNestedType(() => ({
+  name: 'Project',
+  fields: {
+    title: {
+      type: 'string',
+      description: 'A project title',
+      required: true,
+    },
+    description: {
+      type: 'string',
+      description: 'A project description',
+      required: true,
+    },
+    toolsAndTechnologies: {
+      type: 'string',
+      description: 'Tools and Technologies used in the project',
+      required: true,
+    },
+    rolesAndResponsibilities: {
+      type: 'list',
+      of: { type: 'string' },
+      description: 'Roles and Responsibilities performed in the project',
+      required: true,
+    },
+  },
+}));
+
 export const ProfessionalExperience = defineDocumentType(() => ({
   name: 'ProfessionalExperience',
   filePathPattern: 'professional-experiences/*.md',
   fields: {
+    title: {
+      type: 'string',
+      description: 'Your most recent title at this organization',
+      required: true,
+    },
     organization: {
       type: 'string',
       description: 'The name of the company or organization you worked with',
       required: true,
     },
-    titles: {
-      type: 'list',
-      of: ProfessionalTitle,
+    startDate: {
+      type: 'string',
+      description: 'A descriptor of when you started the position',
       required: true,
+    },
+    endDate: {
+      type: 'string',
+      description:
+        'If you no longer work with this organization, provide a descriptor of when you ended the position',
+      required: false,
+    },
+    projects: {
+      type: 'list',
+      of: Project,
+      required: false,
     },
   },
 }));
